@@ -246,15 +246,18 @@ const siteLinkWrapperStyle: React.CSSProperties = {
   alignItems: 'center',
   gap: '6px',
   borderRadius: '99px',
-  background: '#ffffff',
-  border: '1px solid rgba(255,255,255,0.42)',
-  boxShadow: '0 2px 2px rgba(22, 42, 58, 0.05), inset 0 1px 0 rgba(255,255,255,0.1)',
+  background: 'linear-gradient(135deg, rgba(80, 60, 90, 0.2) 0%, rgba(70, 50, 80, 0.15) 100%)',
+  border: '1px solid rgba(100, 70, 110, 0.25)',
+  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 6px rgba(0, 0, 0, 0.15)',
+  backdropFilter: 'blur(16px) saturate(1.4)',
+  WebkitBackdropFilter: 'blur(16px) saturate(1.4)',
+  mixBlendMode: 'overlay',
   textDecoration: 'none',
   cursor: 'pointer',
 } as const;
 
 const siteLinkTextStyle: React.CSSProperties = {
-  color: '#000',
+  color: '#ffffff',
   textAlign: 'center',
   fontFamily: 'Pretendard Variable',
   fontSize: '12px',
@@ -262,11 +265,13 @@ const siteLinkTextStyle: React.CSSProperties = {
   fontWeight: 500,
   lineHeight: '150%',
   letterSpacing: '-0.36px',
+  textShadow: '0 1px 2px rgba(0, 0, 0, 0.15)',
 } as const;
 
 const siteLinkIconStyle: React.CSSProperties = {
   width: '16px',
   height: '16px',
+  filter: 'brightness(0) invert(1)',
 } as const;
 
 const AssistantGlassStyles = () => (
@@ -810,9 +815,9 @@ const TokenInfo: React.FC<{ tokens: any }> = () => null;
 const HitInfo: React.FC<{ hits: any[] }> = () => null;
 
 const SiteLinkComponent: React.FC<{ url: string; linkText?: string }> = ({ url, linkText }) => (
-  <a href={url} target="_blank" rel="noopener noreferrer" className="site-link-button" style={siteLinkWrapperStyle}>
-    <span style={siteLinkTextStyle}>{linkText || '바로가기'}</span>
-    <img src="/link-external-01.svg" alt="" style={siteLinkIconStyle} />
+  <a href={url} target="_blank" rel="noopener noreferrer" className="site-link-button" style={{ position: 'relative', ...siteLinkWrapperStyle }}>
+    <span style={{ position: 'relative', zIndex: 1, ...siteLinkTextStyle }}>{linkText || '바로가기'}</span>
+    <img src="/link-external-01.svg" alt="" style={{ position: 'relative', zIndex: 1, ...siteLinkIconStyle }} />
   </a>
 );
 
@@ -823,7 +828,8 @@ SiteLink.displayName = 'SiteLink';
 const FeedbackComponent: React.FC<{ 
   onFeedback: (feedback: 'negative' | 'positive') => void;
   isVisible: boolean;
-}> = ({ onFeedback, isVisible }) => {
+  buttonStyle?: 1 | 2 | 3;
+}> = ({ onFeedback, isVisible, buttonStyle = 1 }) => {
   const [selectedFeedback, setSelectedFeedback] = useState<'negative' | 'positive' | null>(null);
 
   const handleFeedbackClick = (feedback: 'negative' | 'positive') => {
@@ -832,14 +838,78 @@ const FeedbackComponent: React.FC<{
     onFeedback(feedback);
   };
 
+  // 버튼 스타일 가져오기
+  const getButtonStyle = (isSelected: boolean) => {
+    // Dynamic import 대신 직접 import
+    if (buttonStyle === 1) {
+      return {
+        borderRadius: '24px',
+        border: '1px solid #D2D2FC',
+        background: isSelected
+          ? 'linear-gradient(131deg, rgba(255, 255, 255, 0.30) 13.16%, rgba(223, 223, 255, 0.78) 71.01%)'
+          : 'linear-gradient(131deg, rgba(255, 255, 255, 0.25) 13.16%, rgba(230, 210, 255, 0.55) 50%, rgba(223, 223, 255, 0.65) 71.01%)',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.3), 0 4px 9.1px 0 rgba(166, 166, 166, 0.2)',
+        backdropFilter: 'blur(16px) saturate(1.4)',
+        WebkitBackdropFilter: 'blur(16px) saturate(1.4)',
+        padding: '8px 16px',
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
+      };
+    } else if (buttonStyle === 2) {
+      return {
+        borderRadius: '24px',
+        border: '1px solid rgba(200, 180, 230, 0.5)',
+        background: isSelected
+          ? 'linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(230, 210, 255, 0.7) 50%, rgba(220, 200, 250, 0.6) 100%)'
+          : 'linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(230, 210, 255, 0.6) 50%, rgba(220, 200, 250, 0.5) 100%)',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.4), 0 4px 9.1px 0 rgba(166, 166, 166, 0.25)',
+        backdropFilter: 'blur(16px) saturate(1.4)',
+        WebkitBackdropFilter: 'blur(16px) saturate(1.4)',
+        padding: '8px 16px',
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
+      };
+    } else {
+      return {
+        borderRadius: '24px',
+        border: '1px solid rgba(200, 180, 230, 0.4)',
+        background: isSelected
+          ? 'rgba(240, 230, 255, 0.6)'
+          : 'rgba(240, 230, 255, 0.45)',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.3), 0 4px 9.1px 0 rgba(166, 166, 166, 0.2)',
+        backdropFilter: 'blur(16px) saturate(1.4)',
+        WebkitBackdropFilter: 'blur(16px) saturate(1.4)',
+        padding: '8px 16px',
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
+      };
+    }
+  };
+
+  const textStyle = {
+    fontFamily: 'Pretendard Variable',
+    fontSize: '13px',
+    fontStyle: 'normal',
+    fontWeight: 500,
+    lineHeight: '140%',
+    letterSpacing: '-0.6px',
+    color: 'rgba(112, 60, 161, 0.70)',
+  };
+
   if (!isVisible) return null;
 
   return (
     <div
-      className="mt-4 flex items-center justify-center gap-3"
       style={{
+        marginTop: '16px',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
         opacity: isVisible ? 1 : 0,
         transition: 'opacity 0.4s ease-in-out',
+        gap: '12px',
       }}
     >
       {/* '추천이 적절했나요?' 텍스트 */}
@@ -853,6 +923,7 @@ const FeedbackComponent: React.FC<{
           lineHeight: '140%',
           letterSpacing: '-0.56px',
           whiteSpace: 'nowrap',
+          flexShrink: 0,
         }}
       >
         추천이 적절했나요?
@@ -862,39 +933,21 @@ const FeedbackComponent: React.FC<{
       <div
         style={{
           display: 'flex',
+          flexDirection: 'row',
           gap: '8px',
           alignItems: 'center',
+          flexShrink: 0,
         }}
       >
         <button
           onClick={() => handleFeedbackClick('negative')}
           disabled={selectedFeedback !== null}
           style={{
-            borderRadius: '24px',
-            border: '1px solid #D2D2FC',
-            background: selectedFeedback === 'negative'
-              ? 'linear-gradient(131deg, rgba(255, 255, 255, 0.30) 13.16%, rgba(223, 223, 255, 0.78) 71.01%)'
-              : 'linear-gradient(131deg, rgba(255, 255, 255, 0.20) 13.16%, rgba(223, 223, 255, 0.68) 71.01%)',
-            boxShadow: '0 4px 9.1px 0 rgba(166, 166, 166, 0.25)',
-            padding: '6px 16px',
+            ...getButtonStyle(selectedFeedback === 'negative'),
             cursor: selectedFeedback !== null ? 'default' : 'pointer',
-            transition: 'all 0.2s ease',
           }}
         >
-          <span
-            style={{
-              fontFamily: 'Pretendard Variable',
-              fontSize: '13px',
-              fontStyle: 'normal',
-              fontWeight: 500,
-              lineHeight: '140%',
-              letterSpacing: '-0.6px',
-              background: 'linear-gradient(97deg, #000 42.46%, #DACDFC 94.61%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
+          <span style={textStyle}>
             조금 아쉬워요
           </span>
         </button>
@@ -903,31 +956,11 @@ const FeedbackComponent: React.FC<{
           onClick={() => handleFeedbackClick('positive')}
           disabled={selectedFeedback !== null}
           style={{
-            borderRadius: '24px',
-            border: '1px solid #D2D2FC',
-            background: selectedFeedback === 'positive'
-              ? 'linear-gradient(131deg, rgba(255, 255, 255, 0.30) 13.16%, rgba(223, 223, 255, 0.78) 71.01%)'
-              : 'linear-gradient(131deg, rgba(255, 255, 255, 0.20) 13.16%, rgba(223, 223, 255, 0.68) 71.01%)',
-            boxShadow: '0 4px 9.1px 0 rgba(166, 166, 166, 0.25)',
-            padding: '6px 16px',
+            ...getButtonStyle(selectedFeedback === 'positive'),
             cursor: selectedFeedback !== null ? 'default' : 'pointer',
-            transition: 'all 0.2s ease',
           }}
         >
-          <span
-            style={{
-              fontFamily: 'Pretendard Variable',
-              fontSize: '13px',
-              fontStyle: 'normal',
-              fontWeight: 500,
-              lineHeight: '140%',
-              letterSpacing: '-0.6px',
-              background: 'linear-gradient(97deg, #000 42.46%, #DACDFC 94.61%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
+          <span style={textStyle}>
             잘 맞아요
           </span>
         </button>
@@ -1053,7 +1086,8 @@ const SegmentedMessageComponent: React.FC<{
   typewriterVariant: TypewriterVariant;
   glassStyleVariant?: GlassStyleVariant;
   isFirstAnswer?: boolean;
-}> = ({ message, onPlayTTS: _onPlayTTS, isPlayingTTS: _isPlayingTTS, typewriterVariant, glassStyleVariant = 'v2', isFirstAnswer = false }) => {
+  feedbackButtonStyle?: 1 | 2 | 3;
+}> = ({ message, onPlayTTS: _onPlayTTS, isPlayingTTS: _isPlayingTTS, typewriterVariant, glassStyleVariant = 'v2', isFirstAnswer = false, feedbackButtonStyle = 1 }) => {
   const [showHighlight, setShowHighlight] = useState(false);
   const [isSiteVisible, setIsSiteVisible] = useState(false);
 
@@ -1360,6 +1394,7 @@ const SegmentedMessageComponent: React.FC<{
                       // TODO: 피드백 처리 로직 추가
                     }}
                     isVisible={true}
+                    buttonStyle={feedbackButtonStyle}
                   />
                 )}
 
@@ -1378,16 +1413,17 @@ const SegmentedMessageComponent: React.FC<{
                   render={renderTypewriter}
                 />
 
-                {/* 첫 번째 답변에만 피드백 UI 표시 */}
-                {isFirstAnswer && (
-                  <Feedback 
-                    onFeedback={(feedback) => {
-                      console.log('Feedback received:', feedback);
-                      // TODO: 피드백 처리 로직 추가
-                    }}
-                    isVisible={shouldShowSite && isSiteVisible}
-                  />
-                )}
+                    {/* 첫 번째 답변에만 피드백 UI 표시 */}
+                    {isFirstAnswer && (
+                      <Feedback
+                        onFeedback={(feedback) => {
+                          console.log('Feedback received:', feedback);
+                          // TODO: 피드백 처리 로직 추가
+                        }}
+                        isVisible={shouldShowSite && isSiteVisible}
+                        buttonStyle={feedbackButtonStyle}
+                      />
+                    )}
 
                 {message.tokens && <TokenInfo tokens={message.tokens} />}
                 {message.hits && message.hits.length > 0 && <HitInfo hits={message.hits} />}
@@ -1457,6 +1493,7 @@ const SingleMessageComponent: React.FC<{
   isRecording?: boolean;
   thinkingText?: string; // 커스텀 thinking 텍스트
   isFirstAnswer?: boolean;
+  feedbackButtonStyle?: 1 | 2 | 3;
 }> = ({
   message,
   isThinking,
@@ -1464,6 +1501,7 @@ const SingleMessageComponent: React.FC<{
   isPlayingTTS: _isPlayingTTS,
   isGlobalLoading: _isGlobalLoading = false,
   thinkingText,
+  feedbackButtonStyle = 1,
   typewriterVariant,
   glassStyleVariant = 'v2',
   isRecording = false,
@@ -1845,6 +1883,7 @@ const SingleMessageComponent: React.FC<{
                           // TODO: 피드백 처리 로직 추가
                         }}
                         isVisible={true}
+                        buttonStyle={feedbackButtonStyle}
                       />
                     )}
 
@@ -1865,12 +1904,13 @@ const SingleMessageComponent: React.FC<{
 
                     {/* 첫 번째 답변에만 피드백 UI 표시 */}
                     {isFirstAnswer && (
-                      <Feedback 
+                      <Feedback
                         onFeedback={(feedback) => {
                           console.log('Feedback received:', feedback);
                           // TODO: 피드백 처리 로직 추가
                         }}
                         isVisible={shouldShowSite && isSiteVisible}
+                        buttonStyle={feedbackButtonStyle}
                       />
                     )}
 
@@ -1907,7 +1947,7 @@ SingleMessage.displayName = 'SingleMessage';
 /**
  * 메인 ChatBubble 컴포넌트
  */
-export const ChatBubble: React.FC<ChatBubbleProps & { thinkingText?: string }> = ({ 
+export const ChatBubble: React.FC<ChatBubbleProps & { thinkingText?: string; feedbackButtonStyle?: 1 | 2 | 3 }> = ({ 
   message, 
   isThinking = false, 
   onPlayTTS, 
@@ -1917,7 +1957,8 @@ export const ChatBubble: React.FC<ChatBubbleProps & { thinkingText?: string }> =
   glassStyleVariant = 'v2',
   isRecording = false,
   thinkingText,
-  isFirstAnswer = false
+  isFirstAnswer = false,
+  feedbackButtonStyle = 1
 }) => {
   // AI 메시지이고 segments가 있으면 분할된 말풍선들을 렌더링
   if (message.role === 'assistant' && message.segments && message.segments.length > 1) {
@@ -1929,6 +1970,7 @@ export const ChatBubble: React.FC<ChatBubbleProps & { thinkingText?: string }> =
         typewriterVariant={typewriterVariant}
         glassStyleVariant={glassStyleVariant}
         isFirstAnswer={isFirstAnswer}
+        feedbackButtonStyle={feedbackButtonStyle}
       />
     );
   }
@@ -1946,6 +1988,7 @@ export const ChatBubble: React.FC<ChatBubbleProps & { thinkingText?: string }> =
       isRecording={isRecording}
       thinkingText={thinkingText}
       isFirstAnswer={isFirstAnswer}
+      feedbackButtonStyle={feedbackButtonStyle}
     />
   );
 };
