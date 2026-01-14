@@ -12,14 +12,14 @@ export const getFeedbackButtonStyle1 = (isSelected) => ({
   boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.3), 0 4px 9.1px 0 rgba(166, 166, 166, 0.2)',
   backdropFilter: 'blur(16px) saturate(1.4)',
   WebkitBackdropFilter: 'blur(16px) saturate(1.4)',
-  padding: '8px 16px',
+  padding: '5px 16px',
   cursor: 'pointer',
   transition: 'all 0.2s ease',
 });
 
 export const getFeedbackButtonTextStyle1 = () => ({
   fontFamily: 'Pretendard Variable',
-  fontSize: '13px',
+  fontSize: '11px',
   fontStyle: 'normal',
   fontWeight: 500,
   lineHeight: '140%',

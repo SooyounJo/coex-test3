@@ -8,7 +8,6 @@ import { fixedQAData, CHIP_PARAPHRASING } from '@/components/main-page/v1/consta
 import GradualBlur from '@/components/ui/GradualBlur';
 
 const RecommendationPage = () => {
-  const [selectedButtonStyle, setSelectedButtonStyle] = useState(1);
   const [scrollOpacity, setScrollOpacity] = useState(1);
   const scrollContainerRef = useRef(null);
   const chipText = CHIP_PARAPHRASING.family[0]; // "가족끼리"
@@ -26,6 +25,7 @@ const RecommendationPage = () => {
       linkText: ledScreenData.linkText,
     });
   }, [chipText]);
+
 
 
   // 스크롤 위치에 따라 블러 opacity 조정
@@ -85,78 +85,6 @@ const RecommendationPage = () => {
         />
       </div>
 
-      {/* 우측 스위치 버튼들 (모달 밖) */}
-      <div
-        style={{
-          position: 'fixed',
-          right: '16px',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '12px',
-          zIndex: 1000,
-        }}
-      >
-        <button
-          onClick={() => setSelectedButtonStyle(1)}
-          style={{
-            padding: '8px 12px',
-            borderRadius: '8px',
-            border: selectedButtonStyle === 1 ? '2px solid rgba(112, 60, 161, 0.8)' : '1px solid rgba(112, 60, 161, 0.3)',
-            background: selectedButtonStyle === 1 ? 'rgba(112, 60, 161, 0.1)' : 'rgba(255, 255, 255, 0.8)',
-            color: 'rgba(112, 60, 161, 0.9)',
-            fontFamily: 'Pretendard Variable',
-            fontSize: '12px',
-            fontWeight: 500,
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-          }}
-        >
-          버튼 1
-        </button>
-        <button
-          onClick={() => setSelectedButtonStyle(2)}
-          style={{
-            padding: '8px 12px',
-            borderRadius: '8px',
-            border: selectedButtonStyle === 2 ? '2px solid rgba(112, 60, 161, 0.8)' : '1px solid rgba(112, 60, 161, 0.3)',
-            background: selectedButtonStyle === 2 ? 'rgba(112, 60, 161, 0.1)' : 'rgba(255, 255, 255, 0.8)',
-            color: 'rgba(112, 60, 161, 0.9)',
-            fontFamily: 'Pretendard Variable',
-            fontSize: '12px',
-            fontWeight: 500,
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-          }}
-        >
-          버튼 2
-        </button>
-        <button
-          onClick={() => setSelectedButtonStyle(3)}
-          style={{
-            padding: '8px 12px',
-            borderRadius: '8px',
-            border: selectedButtonStyle === 3 ? '2px solid rgba(112, 60, 161, 0.8)' : '1px solid rgba(112, 60, 161, 0.3)',
-            background: selectedButtonStyle === 3 ? 'rgba(112, 60, 161, 0.1)' : 'rgba(255, 255, 255, 0.8)',
-            color: 'rgba(112, 60, 161, 0.9)',
-            fontFamily: 'Pretendard Variable',
-            fontSize: '12px',
-            fontWeight: 500,
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-          }}
-        >
-          버튼 3
-        </button>
-      </div>
-
       <main className="relative flex-1 flex flex-col min-h-0 pt-20" style={{ background: 'transparent', paddingBottom: 0, position: 'relative', overflow: 'hidden' }}>
         <div className="flex-1 overflow-hidden">
           <div 
@@ -188,7 +116,7 @@ const RecommendationPage = () => {
                   isGlobalLoading={false}
                   typewriterVariant="v1"
                   isFirstAnswer={true}
-                  feedbackButtonStyle={selectedButtonStyle}
+                  feedbackButtonStyle={1}
                 />
               </div>
               
@@ -208,7 +136,9 @@ const RecommendationPage = () => {
                   isGlobalLoading={false}
                   typewriterVariant="v1"
                   isFirstAnswer={true}
-                  feedbackButtonStyle={selectedButtonStyle}
+                  feedbackButtonStyle={1}
+                  customFeedbackText={"이런 답변을 원하시는 군요.\n비슷한 답변을 생각해 볼게요!"}
+                  customButtonText={"이런 방향으로\n계속 추천"}
                 />
               </div>
             </div>
